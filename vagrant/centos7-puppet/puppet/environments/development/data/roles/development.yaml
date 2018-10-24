@@ -1,0 +1,5 @@
+---
+version: 5
+
+classes:
+  - roles::development

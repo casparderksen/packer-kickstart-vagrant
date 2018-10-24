@@ -1,0 +1,28 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Provision puppet box",
+            "type": "shell",
+            "command": "vagrant provision",
+            "options": {
+                "cwd": "${workspaceFolder}/vagrant/centos7-puppet"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "focus": true,
+            }
+        },
+        {
+            "label": "Make",
+            "type": "shell",
+            "command": "make",
+            "group": "build"
+        }
+    ]
+}

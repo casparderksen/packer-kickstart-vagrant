@@ -1,0 +1,13 @@
+### Virtual machines
+*.box
+*.ova
+.vagrant
+
+### Installer images
+*.iso
+*.rpm
+
+### Packer genereted files
+builds
+packer_cache
+output-virtualbox-*

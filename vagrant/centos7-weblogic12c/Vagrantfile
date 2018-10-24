@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos7-weblogic12c"
+
+  # Create a private network
+  config.vm.network "private_network", ip: "192.168.33.12"
+
+  # Weblogic AdminServer ports
+  config.vm.network :forwarded_port, guest: 7001, host: 7001
+  config.vm.network :forwarded_port, guest: 7002, host: 7002
+
+  # Weblogic managed servers ports
+  config.vm.network :forwarded_port, guest: 7011, host: 7011
+  config.vm.network :forwarded_port, guest: 7012, host: 7012
+
+  # VirtualBox provider configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "CentOS 7 - Weblogic 12c"
+    vb.memory = "4096"
+    vb.cpus = 2
+  end
+
+end

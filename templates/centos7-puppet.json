@@ -1,0 +1,84 @@
+{
+  "variables": {
+    "vm_name": "centos7-puppet",
+    "memory": "1024",
+    "cpus": "1",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "source_path": "output-virtualbox-centos7-basebox/centos7-basebox.ovf",
+    "puppet_code_dir": "vagrant/centos7-puppet/puppet"
+  },
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/puppet/preinstall_puppet.sh",
+        "scripts/puppet/install_puppet.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{user `puppet_code_dir`}}",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline": [ 
+        "cp -r /tmp/puppet/eyaml/keys /etc/puppetlabs/puppet/eyaml",
+        "chmod 0700 /etc/puppetlabs/puppet/eyaml",
+        "chmod 0600 /etc/puppetlabs/puppet/eyaml/private*",
+        "cd /tmp/puppet/environments/development",
+        "/opt/puppetlabs/puppet/bin/r10k puppetfile install"
+      ]
+    },
+    {
+      "type": "puppet-masterless",
+      "extra_arguments": [
+        "--environmentpath=environments",
+        "--environment=development",
+        "--modulepath='environments/development/site:environments/development/modules'"
+      ],
+      "facter": { "role": "default" },
+      "manifest_file": "{{user `puppet_code_dir`}}/environments/development/manifests/site.pp",
+      "puppet_bin_dir": "/opt/puppetlabs/bin",
+      "working_directory": "/tmp/puppet"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/basebox/cleanup.sh",
+        "scripts/basebox/zerodisk.sh"
+      ]
+    }
+  ],
+
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "headless": false,
+      "source_path": "{{user `source_path`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "guest_additions_mode": "disable",
+      "output_directory": "output-virtualbox-{{user `vm_name`}}",
+      "shutdown_command": "echo {{user `ssh_password`}} | sudo -S shutdown -P now",
+      "vm_name": "{{user `vm_name`}}",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}" ]
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "output": "builds/{{.Provider}}-{{user `vm_name`}}.box"
+    }
+  ]
+}
