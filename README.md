@@ -141,7 +141,7 @@ The directory `vagrant/centos7-oracle12c` contains a Vagranfile for running the 
 
 The directory `vagrant/centos7-weblogic12c` contains a Vagranfile for running the Weblogic 12c box.
 
-## Centos7 Puppet and Docker development box
+## Centos7 Puppet box
 
 The directory `vagrant/centos7-puppet` contains a Vagranfile for provisioning boxes with Puppet.
 
