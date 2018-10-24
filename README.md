@@ -27,8 +27,8 @@ build time is significantly reduced (similar to layered Docker images).
 
 Download the following files to the `iso` directory:
 
-    [`CentOS-7-x86_64-Minimal-1804.iso`](http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso)
-    [`VBoxGuestAdditions_5.1.22.iso`](https://download.virtualbox.org/virtualbox/5.2.20/VBoxGuestAdditions_5.2.20.iso)
+- [`CentOS-7-x86_64-Minimal-1804.iso`](http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso)
+- [`VBoxGuestAdditions_5.1.22.iso`](https://download.virtualbox.org/virtualbox/5.2.20/VBoxGuestAdditions_5.2.20.iso)
 
 When using different versions, adapt the file names and SHA256 checksums in `templates/centos7-basebox` accordingly.
 
