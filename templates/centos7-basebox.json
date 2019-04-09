@@ -6,10 +6,10 @@
     "cpus": "1",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
-    "iso_url": "iso/CentOS-7-x86_64-Minimal-1804.iso",
-    "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
-    "guest_additions_url": "iso/VBoxGuestAdditions_5.2.20.iso",
-    "guest_additions_sha256": "d3c4a0f79a1ff0c35190c530612d83b81a2035eb9f056237888d8b056c07005f"
+    "iso_url": "iso/CentOS-7-x86_64-Minimal-1810.iso",
+    "iso_checksum": "38d5d51d9d100fd73df031ffd6bd8b1297ce24660dc8c13a3b8b4534a4bd291c",
+    "guest_additions_url": "iso/VBoxGuestAdditions_5.2.26.iso",
+    "guest_additions_sha256": "b927c5d0d4c97a9da2522daad41fe96b616ed06bfb0c883f9c42aad2244f7c38"
   },
 
   "provisioners": [
