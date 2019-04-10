@@ -1,5 +1,5 @@
 BASE_BOXES	= centos7-basebox
-BOXES		= $(BASE_BOXES) centos7-puppet centos7-oracle12c centos7-weblogic12c
+BOXES		= $(BASE_BOXES) centos7-ansible centos7-puppet centos7-oracle12c centos7-weblogic12c
 TARGETS		= $(foreach box, $(BOXES), builds/virtualbox-$(box).box)
 
 .PHONY: default

@@ -5,6 +5,7 @@
 - [Makefile for Packer builds](#makefile-for-packer-builds)
 - [Boxes created with Packer](#boxes-created-with-packer)
   - [CentOS-7 base box](#centos-7-base-box)
+  - [Ansible box](#ansible-box)
   - [Puppet box](#puppet-box)
   - [Oracle 12c database](#oracle-12c-database)
     - [External dependencies](#external-dependencies)
@@ -27,8 +28,8 @@ build time is significantly reduced (similar to layered Docker images).
 
 Download the following files to the `iso` directory:
 
-- [`CentOS-7-x86_64-Minimal-1804.iso`](http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso)
-- [`VBoxGuestAdditions_5.1.22.iso`](https://download.virtualbox.org/virtualbox/5.2.20/VBoxGuestAdditions_5.2.20.iso)
+- [`CentOS-7-x86_64-Minimal-1810.iso`](http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso)
+- [`VBoxGuestAdditions_5.1.26.iso`](https://download.virtualbox.org/virtualbox/5.2.26/VBoxGuestAdditions_5.2.26.iso)
 
 When using different versions, adapt the file names and SHA256 checksums in `templates/centos7-basebox` accordingly.
 
@@ -70,6 +71,15 @@ layout in `http/ks.cfg`.
 System updates are performed from the Kickstart provisioning process, in order to compile
 VirtualBox guest additions against the latest kernel from the from Packer shell
 provisioning scripts.
+
+## Ansible box
+
+This image contains a base box with Ansible installed.
+
+An Ansible provisiong run is executed from Packer for configuring the image,
+using the Ansible playbook from the Vagrant example Ansible configuration.
+This allows development and testing of manifests in the Vagrant box and
+packaging the final result with Packer.
 
 ## Puppet box
 
