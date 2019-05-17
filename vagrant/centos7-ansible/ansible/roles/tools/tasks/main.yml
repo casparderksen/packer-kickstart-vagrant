@@ -1,0 +1,29 @@
+---
+
+- name: Install command line tools
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bash-completion
+    - git-core
+    - git-extras
+    - git-lfs
+    - git-tools
+    - gitflow
+    - graphviz
+    - httpie
+    - jq
+    - lsof
+    - make
+    - man
+    - man-pages
+    - net-tools
+    - rsync
+    - screen
+    - strace
+    - sysstat
+    - vim-enhanced
+    - wget
+    - zip
+    - unzip

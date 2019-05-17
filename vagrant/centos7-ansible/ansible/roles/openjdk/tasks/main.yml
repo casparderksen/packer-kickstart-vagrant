@@ -1,0 +1,19 @@
+---
+
+- name: Install OpenJDK 8
+  package:
+    name: java-1.8.0-openjdk-devel
+    state: present
+  when: install_jdk_8
+
+- name: Install OpenJDK 11
+  package:
+    name: java-11-openjdk-devel
+    state: present
+  when: install_jdk_11
+
+- name: Add Java profile script
+  copy:
+    src: java.sh
+    dest: /etc/profile.d
+    mode: 0644

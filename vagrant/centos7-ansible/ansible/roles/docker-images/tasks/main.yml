@@ -1,0 +1,6 @@
+---
+
+- name: Pull Docker images
+  docker_image:
+    name: "{{ item }}"
+  with_items: "{{ docker_images }}"

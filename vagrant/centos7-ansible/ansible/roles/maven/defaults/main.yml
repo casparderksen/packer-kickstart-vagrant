@@ -1,0 +1,6 @@
+---
+
+maven_version: 3.6.1
+maven_users:
+  - vagrant
+maven_master_password: changeit

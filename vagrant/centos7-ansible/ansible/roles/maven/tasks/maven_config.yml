@@ -1,0 +1,25 @@
+---
+
+- name: Create .m2 directory
+  file:
+    path: "~{{ user }}/.m2"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0755
+
+- name: Create settings.xml
+  template:
+    src: settings.xml.j2
+    dest: "~{{ user }}/.m2/settings.xml"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+
+- name: Create settings-security.xml
+  template:
+    src: settings-security.xml.j2
+    dest: "~{{ user }}/.m2/settings-security.xml"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0600

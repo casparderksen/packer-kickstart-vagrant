@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "vm_name": "centos7-devbox",
+    "memory": "4096",
+    "cpus": "2",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "source_path": "output-virtualbox-centos7-ansible/centos7-ansible.ovf",
+    "ansible_playbook_dir": "vagrant/centos7-ansible/ansible"
+  },
+
+  "provisioners": [
+    {
+      "type": "ansible-local",
+      "playbook_file": "{{user `ansible_playbook_dir`}}/devbox.yml",
+      "playbook_dir": "{{user `ansible_playbook_dir`}}"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/basebox/cleanup.sh",
+        "scripts/basebox/zerodisk.sh"
+      ]
+    }
+  ],
+
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "headless": false,
+      "source_path": "{{user `source_path`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "guest_additions_mode": "disable",
+      "output_directory": "output-virtualbox-{{user `vm_name`}}",
+      "shutdown_command": "echo {{user `ssh_password`}} | sudo -S shutdown -P now",
+      "vm_name": "{{user `vm_name`}}",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}" ]
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "output": "builds/{{.Provider}}-{{user `vm_name`}}.box"
+    }
+  ]
+}

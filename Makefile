@@ -1,5 +1,5 @@
 BASE_BOXES	= centos7-basebox
-BOXES		= $(BASE_BOXES) centos7-ansible centos7-puppet centos7-oracle12c centos7-weblogic12c
+BOXES		= $(BASE_BOXES) centos7-ansible centos7-puppet centos7-oracle12c centos7-weblogic12c centos7-devbox
 TARGETS		= $(foreach box, $(BOXES), builds/virtualbox-$(box).box)
 
 .PHONY: default
@@ -20,8 +20,10 @@ builds/virtualbox-%.box: templates/%.json
 $(foreach box, $(BASE_BOXES), builds/virtualbox-$(box).box): \
 builds/virtualbox-%.box: http/%.ks scripts/basebox/*.sh
 
-builds/virtualbox-%-puppet.box: scripts/puppet/*.sh builds/virtualbox-%.box
-builds/virtualbox-%-oracle12c.box: scripts/oracle/* builds/virtualbox-%.box
+builds/virtualbox-%-ansible.box: scripts/ansible/*.sh builds/virtualbox-%-basebox.box
+builds/virtualbox-%-devbox.box: builds/virtualbox-%-ansible.box
+builds/virtualbox-%-puppet.box: scripts/puppet/*.sh builds/virtualbox-%-basebox.box
+builds/virtualbox-%-oracle12c.box: scripts/oracle/* builds/virtualbox-%-basebox.box
 
 .PHONY: add
 add: $(BOXES:=.add)

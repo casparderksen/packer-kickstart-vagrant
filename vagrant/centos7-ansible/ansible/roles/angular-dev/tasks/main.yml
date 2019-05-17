@@ -1,0 +1,8 @@
+---
+
+- name: "Install Angular development tools"
+  npm:
+    name: "{{ item }}"
+    global: yes
+  with_items:
+    - '@angular/cli'

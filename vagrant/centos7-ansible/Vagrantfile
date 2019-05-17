@@ -7,14 +7,9 @@ Vagrant.configure("2") do |config|
   # VirtualBox provider configuration
   config.vm.provider "virtualbox" do |vb|
     vb.name = "CentOS 7"
-    vb.memory = "1024"
+    vb.memory = "8192"
     vb.cpus = 2
   end
-
-  # TODO
-  config.vm.provision "shell", inline: <<-SCRIPT
-    yum -y install ansible
-    SCRIPT
 
   # Perform Ansible provisioning
   config.vm.provision "ansible_local" do |ansible|

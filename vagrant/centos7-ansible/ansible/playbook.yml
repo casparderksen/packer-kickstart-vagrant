@@ -3,5 +3,5 @@
   become: yes
   tasks:
 
-  - name: print out the hostname of target
+  - name: Print out the hostname of target
     command: hostname

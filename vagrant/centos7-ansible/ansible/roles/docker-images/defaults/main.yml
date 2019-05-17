@@ -1,0 +1,23 @@
+---
+
+docker_images:
+  - cassandra
+  - centos:7
+  - confluentinc/cp-kafka
+  - confluentinc/cp-zookeeper
+  - docker.elastic.co/elasticsearch/elasticsearch:6.7.1
+  - docker.elastic.co/logstash/logstash:6.7.1
+  - docker.elastic.co/kibana/kibana:6.7.1
+  - jaegertracing/all-in-one
+  - jboss/wildfly
+  - jenkins/jenkins:lts
+  - nginx
+  - openjdk:8
+  - openjdk:11
+  - postgres
+  - prom/prometheus
+  - prom/alertmanager
+  - prom/node-exporter
+  - grafana/grafana
+  - fluent/fluentd
+  - registry

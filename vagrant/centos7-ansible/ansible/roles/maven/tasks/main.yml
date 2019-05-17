@@ -1,0 +1,27 @@
+---
+
+- name: Test if Apache Maven already installed
+  stat:
+    path: "/opt/apache-maven-{{ maven_version }}"
+  register: maven_installed
+
+- name: Download and install Apache Maven
+  unarchive:
+    src: "http://www.apache.org/dist/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+    dest: "/opt"
+    remote_src: yes
+  when: not maven_installed.stat.exists
+
+- name: Add Maven profile script
+  template:
+    src: maven.sh.j2
+    dest: /etc/profile.d/maven.sh
+    mode: 0644
+
+- name: Create Maven settings
+  include: maven_config.yml
+  with_items: "{{ maven_users }}"
+  loop_control:
+    loop_var: user
+
+

@@ -1,0 +1,15 @@
+---
+
+- name: Install Node.js 10.x repository
+  command: rpm -i --nosignature https://rpm.nodesource.com/pub_10.x/el/7/x86_64/nodesource-release-el7-1.noarch.rpm
+  args:
+    creates: /etc/yum.repos.d/nodesource-el7.repo
+
+- name: Install Node and dev tools
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nodejs
+    - gcc-c++
+    - make

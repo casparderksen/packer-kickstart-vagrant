@@ -1,0 +1,22 @@
+---
+
+- name: Install Oracle Instantclient
+  block:
+    - find:
+        paths: "{{ instantclient_rpm_dir }}"
+        patterns: "*.rpm"
+      register: rpm_files
+    - yum:
+        name: "{{ rpm_files.files | map(attribute='path') | list}}"
+        state: present
+
+- name: Add instantclient profile script
+  template:
+    src: instantclient.sh.j2
+    dest: /etc/profile.d/instantclient.sh
+    mode: 0644
+
+- name: Create directory for tnsnames.ora
+  file:
+    path: "{{ instantclient_dir }}/client64/lib/network/admin"
+    state: directory

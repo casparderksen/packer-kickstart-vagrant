@@ -1,0 +1,62 @@
+---
+
+- name: Install Docker required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Install Docker CE repository
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install Docker CE
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: Ensure Docker is started at boot and running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add Docker users to the docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  with_items: "{{ docker_users }}"
+
+- name: Install Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 0755
+
+#- name: Install Python Docker SDK
+#  block:
+#    - package:
+#        name: python-pip
+#        state: present
+#    - pip:
+#        name: docker
+
+- name: Install Python Docker SDK
+  package:
+    name: python-docker-py
+    state: present
+
+- name: Add cleanup script
+  copy:
+    src: docker-clean.sh
+    dest: /usr/local/bin
+    mode: 0755
