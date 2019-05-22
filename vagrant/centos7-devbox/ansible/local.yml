@@ -3,6 +3,13 @@
 - hosts: all
   become: yes
 
+  vars_prompt:
+    - name: username
+      prompt: "User name"
+      private: no
+    - name: password
+      prompt: "Password"
+
   tasks:
     - name: Disable all Yum repos
       command: yum-config-manager --disable '*'
@@ -10,4 +17,4 @@
   roles:
     - role: maven
       vars:
-        maven_master_password: "secret"
+        maven_master_password: "{{ password }}"
