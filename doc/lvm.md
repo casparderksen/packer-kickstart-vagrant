@@ -14,4 +14,5 @@
 ## Extend logical volume
 
     lvextend -L 32G /dev/vg_system/lv_root
-    resize2fs /dev/vg_system/lv_root
+    xfs_growfs /dev/vg_system/lv_root
+

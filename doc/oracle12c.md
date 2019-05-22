@@ -22,11 +22,6 @@ Download and add the following binaries:
 
 - oracle12c/linuxx64_12201_database.zip
 
-# Todo
-
-- Run post-installation SQL scripts
-- Convert to Puppet
-
 # References
 
 Oracle database installation guide:
