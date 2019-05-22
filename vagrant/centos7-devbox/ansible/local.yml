@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Disable all Yum repos
+      command: yum-config-manager --disable '*'
+
+  roles:
+    - role: maven
+      vars:
+        maven_master_password: "secret"
