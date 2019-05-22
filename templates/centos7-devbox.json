@@ -6,7 +6,7 @@
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "source_path": "output-virtualbox-centos7-ansible/centos7-ansible.ovf",
-    "ansible_playbook_dir": "vagrant/centos7-ansible/ansible"
+    "ansible_playbook_dir": "vagrant/centos7-devbox/ansible"
   },
 
   "provisioners": [

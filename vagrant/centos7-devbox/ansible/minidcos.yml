@@ -1,0 +1,11 @@
+---
+
+# minidcos docker does not work yet, see https://github.com/dcos/dcos-e2e/issues/1574
+
+- hosts: all
+  become: yes
+  roles:
+    - minidcos
+
+
+

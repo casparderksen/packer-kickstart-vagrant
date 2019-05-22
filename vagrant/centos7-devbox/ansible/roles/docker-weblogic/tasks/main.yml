@@ -1,0 +1,12 @@
+---
+
+- name: Test if saved Weblogic Docker image exists
+  stat:
+    path: "{{ docker_image_directory }}/weblogic-12213-dev.tgz"
+  register: docker_image_wls
+
+- name: Load Weblogic Docker image
+  docker_image:
+    name: oracle/weblogic:12.2.1.3-dev
+    load_path: "{{ docker_image_directory }}/weblogic-12213-dev.tgz"
+  when: docker_image_wls.stat.exists

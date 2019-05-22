@@ -42,14 +42,6 @@
     dest: /usr/local/bin/docker-compose
     mode: 0755
 
-#- name: Install Python Docker SDK
-#  block:
-#    - package:
-#        name: python-pip
-#        state: present
-#    - pip:
-#        name: docker
-
 - name: Install Python Docker SDK
   package:
     name: python-docker-py

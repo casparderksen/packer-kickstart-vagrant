@@ -1,0 +1,27 @@
+---
+
+- name: Install minidcos executable
+  get_url:
+    url: "{{ minidcos_url }}"
+    dest: "{{ minidcos_bin }}"
+    mode: '0755'
+
+- name: Test if DC/OS installer exists
+  stat:
+    path: "{{ minidcos_files_dir }}/dcos_generate_config.sh"
+  register: dcos_generate_config
+
+- name: Download DC/OS installer
+  command: "{{ minidcos_bin }} docker download-installer --download-path {{ minidcos_files_dir }}/dcos_generate_config.sh"
+  when: not dcos_generate_config.stat.exists
+
+- name: Find existing DC/OS clusters
+  command: "{{ minidcos_bin }} docker list"
+  register: minidcos_list
+
+- block:
+    - name: Create DC/OS cluster
+      command: "{{ minidcos_bin }} docker create --docker-version 17.12.1-ce --variant oss --agents {{ dcos_agents }} --cluster-id default {{ minidcos_files_dir }}/dcos_generate_config.sh"
+    - name: Wait for DC/OS  to be ready
+      command: "{{ minidcos_bin }} docker wait"
+  when: minidcos_list.stdout.find('default') == -1

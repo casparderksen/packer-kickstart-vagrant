@@ -5,6 +5,8 @@
     path: "{{ docker_image_directory }}/oradb-12201-ee.tgz"
   register: docker_image_oracle
 
+# Execute docker load command instead of docker_image due to bug with large files
+
 - name: Get Oracle Docker image facts
   docker_image_facts:
     name: oracle/database:12.2.0.1-ee

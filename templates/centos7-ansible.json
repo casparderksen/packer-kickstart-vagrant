@@ -14,7 +14,6 @@
       "type": "shell",
       "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "scripts/ansible/preinstall_ansible.sh",
         "scripts/ansible/install_ansible.sh"
       ]
     },

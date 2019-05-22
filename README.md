@@ -6,16 +6,17 @@
 - [Boxes created with Packer](#boxes-created-with-packer)
   - [CentOS-7 base box](#centos-7-base-box)
   - [Ansible box](#ansible-box)
+  - [Development box](#development-box)
   - [Puppet box](#puppet-box)
   - [Oracle 12c database](#oracle-12c-database)
-    - [External dependencies](#external-dependencies)
   - [Weblogic 12c](#weblogic-12c)
-    - [External dependencies](#external-dependencies-1)
-    - [Weblogic Maven plugin](#weblogic-maven-plugin)
 - [Vagrant examples](#vagrant-examples)
   - [Centos7 base box](#centos7-base-box)
-  - [Centos7 Oracle12c box](#centos7-oracle12c-box)
-  - [Centos7 Puppet and Docker development box](#centos7-puppet-and-docker-development-box)
+  - [Centos7 Ansible box](#centos7-ansible-box)
+  - [Centos7 Development box](#centos7-development-box)
+  - [Centos7 Oracle 12c box](#centos7-oracle-12c-box)
+  - [Centos7 Weblogic 12c box](#centos7-weblogic-12c-box)
+  - [Centos7 Puppet box](#centos7-puppet-box)
 
 # About
 
@@ -81,6 +82,17 @@ using the Ansible playbook from the Vagrant example Ansible configuration.
 This allows development and testing of manifests in the Vagrant box and
 packaging the final result with Packer.
 
+## Development box
+
+This image is based on the Ansible box. It contains a Java / Angular / Docker development environment
+with a number of pulled images.
+
+An Ansible provisioning run is executed from Packer for configuring the image,
+using the Ansible code base from the Vagrant development box example configuration.
+This allows development and testing of playbooks in the Vagrant box and
+packaging the final result with packer.
+The resulting box is suited for offline use (behind the corporate firewall).
+
 ## Puppet box
 
 This image is a based on the base box. The following software is installed:
@@ -142,6 +154,19 @@ for running the Packer generated boxes with Vagrant.
 ## Centos7 base box
 
 The directory `vagrant/centos7-basebox` contains a Vagranfile for running the Centos7 base box.
+
+## Centos7 Ansible box
+
+The directory `vagrant/centos7-ansible` contains a Vagranfile for provisioning boxes with Ansible.
+
+## Centos7 Development box
+
+The directory `vagrant/centos7-devbox` contains a Vagranfile for provisioning development environments.
+
+The following playbooks are available:
+- `devbox`: Java / Angular / Docker development environment and tools
+- `minidcos`: Runs minidcos on Docker (blocking issue: [https://github.com/dcos/dcos-e2e/issues/1574](https://github.com/dcos/dcos-e2e/issues/1574)).
+- `oracle`: Loads Oracle docker images for legacy development. See [README.md](vagrant/centos7-devbox/files/README.md) for external dependencies.
 
 ## Centos7 Oracle 12c box
 

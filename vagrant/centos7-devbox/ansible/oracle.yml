@@ -1,0 +1,8 @@
+---
+
+- hosts: all
+  become: yes
+  roles:
+    - docker-oracle
+    - docker-weblogic
+    - instantclient
