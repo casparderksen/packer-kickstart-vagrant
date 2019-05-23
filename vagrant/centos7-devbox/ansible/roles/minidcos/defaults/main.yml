@@ -1,6 +1,8 @@
 ---
 
-minidcos_url: https://github.com/dcos/dcos-e2e/releases/download/2019.05.03.0/minidcos
+minidcos_url: https://github.com/dcos/dcos-e2e/releases/download/2019.05.23.1/minidcos
 minidcos_bin: /usr/local/bin/minidcos
-minidcos_files_dir: /vagrant/files/dcos
+minidcos_host_port_map: 8888:80
+dcos_files_dir: /vagrant/files/dcos
 dcos_agents: 1
+dcos_cluster_id: default
