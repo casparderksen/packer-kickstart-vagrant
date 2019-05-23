@@ -2,7 +2,7 @@
 
 - name: Install minidcos executable
   get_url:
-    url: "{{ minidcos_url }}"
+    url: "{{ minidcos_bin_url }}"
     dest: "{{ minidcos_bin }}"
     mode: '0755'
 
@@ -30,3 +30,22 @@
     - name: Wait for DC/OS  to be ready
       command: "{{ minidcos_bin }} docker wait"
   when: minidcos_list.stdout.find('default') == -1
+
+- name: Inspect DC/OS cluster details
+  command: "{{ minidcos_bin }} docker inspect --cluster-id {{ dcos_cluster_id }}"
+  register: minidcos_inspect
+
+- set_fact:
+    dcos_cluster_info: "{{ minidcos_inspect.stdout | from_json }}"
+
+- set_fact:
+    dcos_master_ip: "{{ dcos_cluster_info.Nodes.masters[0].ip_address }}"
+
+- name: Install dcos executable
+  get_url:
+    url: "{{ dcos_bin_url }}"
+    dest: "{{ dcos_bin }}"
+    mode: '0755'
+
+- name: Setup dcos CLI to communicate with the cluster
+  command: "{{ dcos_bin }} cluster setup http://{{ dcos_master_ip }}"
