@@ -13,3 +13,9 @@
     - nodejs
     - gcc-c++
     - make
+
+- name: Create NPM settings
+  include: npm_config.yml
+  with_items: "{{ npm_users }}"
+  loop_control:
+    loop_var: user
