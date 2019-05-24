@@ -3,6 +3,13 @@
 - hosts: all
   become: yes
 
+  tasks:
+    - name: Disable all Yum repos
+      command: yum-config-manager --disable '*'  
+
+- hosts: all
+  become: yes
+
   vars_prompt:
     - name: username
       prompt: "User name"
@@ -10,11 +17,63 @@
     - name: password
       prompt: "Password"
 
-  tasks:
-    - name: Disable all Yum repos
-      command: yum-config-manager --disable '*'
-
   roles:
+    - role: docker
+      vars:
+        daemon:
+          insecure-registries:
+            - registry.local
+          registry-mirrors:
+            - https://registry.local
+
     - role: maven
       vars:
         maven_master_password: "{{ password }}"
+        settings:
+          interactiveMode: "false"
+          pluginGroups:
+            - org.sonarsource.scanner.maven
+          servers:
+            - id: snapshots
+              username: "{{ username }}"
+              password: "{{ password }}"
+            - id: releases
+              username: "{{ username }}"
+              password: "{{ password }}"
+          mirrors:
+            - id: nexus3
+              mirrorOf: '*'
+              url: https://nexus3.local/repository/maven-public/
+          profiles:
+            - id: sonar
+              activation:
+                activeByDefault: "true"
+              properties:
+                sonar.host.url: https://sonarqube.local/
+                sonar.login: "{{ username }}"
+                sonar.password: "{{ password }}"
+            - id: nexus3
+              repositories:
+                - id: central
+                  url: https://nexus3.local/repository/maven-public/
+                  releases:
+                    enabled: "true"
+                  snapshots:
+                    enabled: "true"
+              pluginRepositories:
+                - id: central
+                  url: https://nexus3.local/repository/maven-public/
+                  releases:
+                    enabled: "true"
+                  snapshots:
+                    enabled: "true"
+          activeProfiles:
+            - nexus3
+            - sandbox
+
+    - role: node
+      vars:
+        npmrc:
+          npm_registry: https://nexus3.local/repository/npm-all
+          sass_binary_site: https://nexus3.local/repository/node-sass-binaries
+          strict_ssl: "false"
