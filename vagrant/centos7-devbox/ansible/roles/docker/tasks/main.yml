@@ -23,10 +23,16 @@
     - docker-ce-cli
     - containerd.io
 
-- name: Ensure Docker is started at boot and running
+- name: Configure Docker daemon
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  when: daemon is defined
+
+- name: Ensure Docker daemon is started at boot and running
   service:
     name: docker
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Add Docker users to the docker group

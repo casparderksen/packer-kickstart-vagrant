@@ -1,5 +1,6 @@
 ---
 
+docker_compose_version: 1.24.0
+
 docker_users:
   - vagrant
-docker_compose_version: 1.24.0
