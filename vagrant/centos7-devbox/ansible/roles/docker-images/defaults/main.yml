@@ -9,6 +9,8 @@ docker_images:
   - docker.elastic.co/logstash/logstash:6.7.1
   - docker.elastic.co/kibana/kibana:6.7.1
   - jaegertracing/all-in-one
+  - jboss/base-jdk:8
+  - jboss/base-jdk:11
   - jboss/wildfly
   - jenkins/jenkins:lts
   - nginx
