@@ -15,3 +15,10 @@
 - name: Load Oracle RDBMS Docker image
   command: docker load -i "{{ docker_image_directory }}/oradb-12201-ee.tgz"
   when: docker_image_oracle.stat.exists and docker_oracle.images | length == 0
+
+- name: Copy Docker Oracle example
+  include: docker_oracle_example.yml
+  with_items: "{{ docker_oracle_users }}"
+  loop_control:
+    loop_var: user
+

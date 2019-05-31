@@ -1,3 +1,8 @@
 ---
 
 docker_image_directory: /vagrant/files/docker-oracle
+
+docker_oracle_users:
+  - vagrant
+
+

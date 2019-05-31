@@ -1,0 +1,8 @@
+---
+
+- name: Copy Docker Oracle example project
+  copy:
+    src: docker-oracle-example
+    dest: "~{{ user }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
