@@ -3,10 +3,30 @@
 - name: Create .m2 directory
   file:
     path: "~{{ user }}/.m2"
-    state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
+    state: directory
     mode: 0755
+
+- name: Test if settings_security.xml exists
+  stat:
+    path: "~{{ user }}/.m2/settings-security.xml"
+  register: m2_settings_security
+
+- block:
+    - name: Generate Maven master password
+      shell:  "cat /dev/urandom | tr -cd '[:print:]' | head -c 32 | {{ m2_home }}/bin/mvn --encrypt-master-password -"
+      register: maven_encrypt_master_password_cmd
+    - set_fact:
+        maven_encrypted_master_password: "{{ maven_encrypt_master_password_cmd.stdout }}"
+    - name: Create settings-security.xml
+      template:
+        src: settings-security.xml.j2
+        dest: "~{{ user }}/.m2/settings-security.xml"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: 0600
+  when: not m2_settings_security.stat.exists
 
 - name: Create settings.xml
   template:
@@ -17,14 +37,4 @@
     mode: 0644
   when: settings is defined
 
-- name: Generate Maven master password
-  shell:  "cat /dev/urandom | tr -cd '[:print:]' | head -c 32 | {{ m2_home }}/bin/mvn --encrypt-master-password -"
-  register: maven_master_password_cmd
 
-- name: Create settings-security.xml
-  template:
-    src: settings-security.xml.j2
-    dest: "~{{ user }}/.m2/settings-security.xml"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: 0600

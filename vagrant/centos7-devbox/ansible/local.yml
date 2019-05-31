@@ -3,13 +3,6 @@
 - hosts: all
   become: yes
 
-  tasks:
-    - name: Disable all Yum repos
-      command: yum-config-manager --disable '*'  
-
-- hosts: all
-  become: yes
-
   vars_prompt:
     - name: username
       prompt: "User name"
@@ -17,8 +10,12 @@
     - name: password
       prompt: "Password"
 
-  roles:
-    - role: docker
+  tasks:
+    - name: Disable all Yum repos
+      command: yum-config-manager --disable '*'
+
+    - include_role:
+        name: docker
       vars:
         daemon:
           insecure-registries:
@@ -26,9 +23,28 @@
           registry-mirrors:
             - https://registry.local
 
-    - role: maven
+    - include_role:
+        name: instantclient
       vars:
-        maven_master_password: "{{ password }}"
+        tnsnames:
+          - sid: CDB1
+            name: cdb1
+            service: pdb1
+            host: localhost
+
+    - name: Encrypt password for Maven
+      command: "mvn --encrypt-password {{ password }}"
+      register: mvn_encrypted_password_cmd
+      become: no
+
+    - set_fact:
+        mvn_encrypted_password: "{{ mvn_encrypted_password_cmd.stdout }}"
+
+    - include_role:
+        name: maven
+        tasks_from: maven_config
+      vars:
+        user: vagrant
         settings:
           interactiveMode: "false"
           pluginGroups:
@@ -36,10 +52,10 @@
           servers:
             - id: snapshots
               username: "{{ username }}"
-              password: "{{ password }}"
+              password: "{{ mvn_encrypted_password }}"
             - id: releases
               username: "{{ username }}"
-              password: "{{ password }}"
+              password: "{{ mvn_encrypted_password }}"
           mirrors:
             - id: nexus3
               mirrorOf: '*'
@@ -51,7 +67,7 @@
               properties:
                 sonar.host.url: https://sonarqube.local/
                 sonar.login: "{{ username }}"
-                sonar.password: "{{ password }}"
+                sonar.password: "{{ mvn_encrypted_password }}"
             - id: nexus3
               repositories:
                 - id: central
@@ -69,11 +85,12 @@
                     enabled: "true"
           activeProfiles:
             - nexus3
-            - sandbox
 
-    - role: node
+    - include_role:
+        name: node
       vars:
         npmrc:
           npm_registry: https://nexus3.local/repository/npm-all
           sass_binary_site: https://nexus3.local/repository/node-sass-binaries
           strict_ssl: "false"
+
