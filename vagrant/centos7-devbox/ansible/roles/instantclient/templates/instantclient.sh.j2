@@ -1,3 +1,5 @@
 # /etc/profile.d/instantclient.sh - Managed by Ansible - do not change
-export PATH={{ instantclient_dir }}/client64/bin:$PATH
-export LD_LIBRARY_PATH={{ instantclient_dir }}/client64/lib:$LD_LIBRARY_PATH
+ORACLE_SID={{ oracle_sid }}
+PATH={{ instantclient_dir }}/client64/bin:$PATH
+LD_LIBRARY_PATH={{ instantclient_dir }}/client64/lib:$LD_LIBRARY_PATH
+export ORACLE_SID PATH LD_LIBRARY_PATH

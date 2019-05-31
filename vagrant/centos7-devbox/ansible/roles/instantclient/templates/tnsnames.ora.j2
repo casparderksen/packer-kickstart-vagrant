@@ -1,7 +1,11 @@
 {% for service in tnsnames %}
-{{ service.sid }} =
+{{ service.name }} =
   (DESCRIPTION =
-    (ADDRESS = (PROTOCOL = TCP)(HOST = {{ service.host }})(PORT = {{ service.port | default('1521') }}))
+    (ADDRESS =
+        (PROTOCOL = TCP)
+        (HOST = {{ service.host }})
+        (PORT = {{ service.port | default('1521') }})
+    )
     (CONNECT_DATA =
       (SERVER = DEDICATED)
       (SERVICE_NAME = {{ service.name }})

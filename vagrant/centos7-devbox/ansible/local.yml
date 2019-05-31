@@ -23,15 +23,6 @@
           registry-mirrors:
             - https://registry.local
 
-    - include_role:
-        name: instantclient
-      vars:
-        tnsnames:
-          - sid: CDB1
-            name: cdb1
-            service: pdb1
-            host: localhost
-
     - name: Encrypt password for Maven
       command: "mvn --encrypt-password {{ password }}"
       register: mvn_encrypted_password_cmd

@@ -2,7 +2,19 @@
 
 - hosts: all
   become: yes
-  roles:
-    - docker-oracle
-    - docker-weblogic
-    - instantclient
+
+  tasks:
+    - include_role:
+        name: docker-oracle
+
+    - include_role:
+        name: docker-weblogic
+
+    - include_role:
+        name: instantclient
+      vars:
+        tnsnames:
+          - name: ORCLCDB
+            host: localhost
+          - name: ORCLPDB1
+            host: localhost
