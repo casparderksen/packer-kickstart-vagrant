@@ -27,12 +27,13 @@
   template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
+  notify: restart docker
   when: daemon is defined
 
 - name: Ensure Docker daemon is started at boot and running
   service:
     name: docker
-    state: restarted
+    state: started
     enabled: yes
 
 - name: Add Docker users to the docker group
