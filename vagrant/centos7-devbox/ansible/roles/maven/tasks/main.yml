@@ -21,7 +21,6 @@
 - name: Create Maven settings
   include: maven_config.yml
   become: yes
-  become_user: "{{ user }}"
   with_items: "{{ maven_users }}"
   loop_control:
     loop_var: user
