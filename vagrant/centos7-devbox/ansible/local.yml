@@ -4,6 +4,12 @@
   become: yes
 
   vars_prompt:
+    - name: full_name
+      prompt: "Full name"
+      private: no
+    - name: email
+      prompt: "E-mail"
+      private: no
     - name: username
       prompt: "User name"
       private: no
@@ -13,6 +19,19 @@
   tasks:
     - name: Disable all Yum repos
       command: yum-config-manager --disable '*'
+
+    - block:
+      - name: Set Git user name
+        git_config:
+          name: user.name
+          scope: global
+          value: "{{ full_name }}"
+      - name: Set Git user e-mail
+        git_config:
+          name: user.email
+          scope: global
+          value: "{{ email }}"
+      become: no
 
     - include_role:
         name: docker
