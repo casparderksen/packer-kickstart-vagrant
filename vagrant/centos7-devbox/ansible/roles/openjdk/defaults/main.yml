@@ -1,4 +1,0 @@
----
-
-install_jdk_8: True
-install_jdk_11: True

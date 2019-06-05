@@ -1,9 +1,0 @@
----
-
-maven_version: 3.6.1
-
-install_dir: /opt
-m2_home: "{{ install_dir }}/apache-maven-{{maven_version}}"
-
-maven_users:
-  - vagrant

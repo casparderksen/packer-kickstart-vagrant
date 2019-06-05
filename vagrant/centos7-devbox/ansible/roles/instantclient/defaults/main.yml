@@ -1,5 +1,0 @@
----
-
-instantclient_rpm_dir: /vagrant/files/instantclient
-instantclient_dir: /usr/lib/oracle/12.2/
-oracle_sid: ORCLCDB
