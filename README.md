@@ -4,19 +4,19 @@
 - [Prequisites](#prequisites)
 - [Makefile for Packer builds](#makefile-for-packer-builds)
 - [Boxes created with Packer](#boxes-created-with-packer)
-  - [CentOS-7 base box](#centos-7-base-box)
+  - [CentOS 7 base box](#centos-7-base-box)
   - [Ansible box](#ansible-box)
   - [Development box](#development-box)
   - [Puppet box](#puppet-box)
   - [Oracle 12c database](#oracle-12c-database)
   - [Weblogic 12c](#weblogic-12c)
 - [Vagrant examples](#vagrant-examples)
-  - [Centos7 base box](#centos7-base-box)
-  - [Centos7 Ansible box](#centos7-ansible-box)
-  - [Centos7 Development box](#centos7-development-box)
-  - [Centos7 Oracle 12c box](#centos7-oracle-12c-box)
-  - [Centos7 Weblogic 12c box](#centos7-weblogic-12c-box)
-  - [Centos7 Puppet box](#centos7-puppet-box)
+  - [Centos 7 base box](#centos-7-base-box)
+  - [Centos 7 Ansible box](#centos-7-ansible-box)
+  - [Centos 7 Development box](#centos-7-development-box)
+  - [Centos 7 Oracle 12c box](#centos-7-oracle-12c-box)
+  - [Centos 7 Weblogic 12c box](#centos-7-weblogic-12c-box)
+  - [Centos 7 Puppet box](#centos-7-puppet-box)
 
 # About
 
@@ -48,11 +48,15 @@ The Makefile provides the following targets:
 	clean:   remove generated boxes
 	clobber: remove generated boxes and caches
 
-Type 'make help' for this help. Type 'make boxes' to build al boxes.
+Type `make help` for this help. Type 
+
+    $ make boxes
+    
+to build al boxes and add them to Vagrant.
 
 # Boxes created with Packer
 
-## CentOS-7 base box
+## CentOS 7 base box
 
 The base box is a minimal image created from an ISO image installer
 with Packer and Kickstart. The following software is installed:
@@ -84,7 +88,7 @@ packaging the final result with Packer.
 
 ## Development box
 
-This image is based on the Ansible box. It contains a Java / Angular / Docker / DC/OS 
+This image is based on the Ansible box. It contains a Java / Angular / Docker / Oracle / DC/OS 
 development environment, with a number of pulled images.
 
 An Ansible provisioning run is executed from Packer for configuring the image,
@@ -92,6 +96,13 @@ using the Ansible code base from the Vagrant development box example configurati
 This allows development and testing of playbooks in the Vagrant box and
 packaging the final result with packer.
 The resulting box is suited for offline use (behind the corporate firewall).
+
+The development box is included as Git submodule and is maintained in a separate repository at 
+[https://github.com/casparderksen/vagrant-ansible-devbox.git](https://github.com/casparderksen/vagrant-ansible-devbox.git).
+
+### External dependencies
+
+See [README.md](vagrant/centos7-devbox/README.md) for providing external dependencies of the development box.
 
 ## Puppet box
 
@@ -151,32 +162,32 @@ See https://docs.oracle.com/middleware/1221/wls/WLPRG/maven.htm#WLPRG585 for usi
 The directory `vagrant` contains example Vagrant configurations
 for running the Packer generated boxes with Vagrant.
 
-## Centos7 base box
+## Centos 7 base box
 
 The directory `vagrant/centos7-basebox` contains a Vagranfile for running the Centos7 base box.
 
-## Centos7 Ansible box
+## Centos 7 Ansible box
 
 The directory `vagrant/centos7-ansible` contains a Vagranfile for provisioning boxes with Ansible.
 
-## Centos7 Development box
+## Centos 7 Development box
 
 The directory `vagrant/centos7-devbox` contains a Vagranfile for provisioning development environments.
 
 The following playbooks are available:
 - `devbox`: Java / Angular / Docker development environment and tools
 - `minidcos`: Runs minidcos on Docker
-- `oracle`: Loads Oracle docker images for legacy development. See [README.md](vagrant/centos7-devbox/files/README.md) for external dependencies.
+- `oracle`: Loads Oracle docker images for legacy development.
 
-## Centos7 Oracle 12c box
+## Centos 7 Oracle 12c box
 
 The directory `vagrant/centos7-oracle12c` contains a Vagranfile for running the Oracle 12c database box.
 
-## Centos7 Weblogic 12c box
+## Centos 7 Weblogic 12c box
 
 The directory `vagrant/centos7-weblogic12c` contains a Vagranfile for running the Weblogic 12c box.
 
-## Centos7 Puppet box
+## Centos 7 Puppet box
 
 The directory `vagrant/centos7-puppet` contains a Vagranfile for provisioning boxes with Puppet.
 
