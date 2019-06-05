@@ -23,9 +23,24 @@
 This project builds CentOS boxes with Packer and Kickstart for use with Vagrant.
 Packer templates are provided for creating a minimal base box, and other boxes
 based on this base box. By reusing base boxes instead of provisioning each box from scratch, 
-build time is significantly reduced (similar to layered Docker images). 
+build time is significantly reduced (similar to layered Docker images).
+
+An interesting box to build is a development environment that is provisioned with Ansible.
+The resulting box is suited for offline use (behind the corporate firewall).
+The development box is included as Git submodule and is maintained in a separate repository at 
+[casparderksen/vagrant-ansible-devbox](https://github.com/casparderksen/vagrant-ansible-devbox.git).
 
 # Prequisites
+
+This project contains Git submodules. Type:
+
+    $ git clone --recursive https://github.com/casparderksen/packer-kickstart-vagrant.git
+    
+to clone recursively, or run
+
+    $  git submodule update --init
+    
+to check-out submodules after cloning.
 
 Download the following files to the `iso` directory:
 
@@ -52,7 +67,6 @@ Type `make help` for this help. Type
 
     $ make boxes
     
-to build al boxes and add them to Vagrant.
 
 # Boxes created with Packer
 
@@ -95,10 +109,6 @@ An Ansible provisioning run is executed from Packer for configuring the image,
 using the Ansible code base from the Vagrant development box example configuration.
 This allows development and testing of playbooks in the Vagrant box and
 packaging the final result with packer.
-The resulting box is suited for offline use (behind the corporate firewall).
-
-The development box is included as Git submodule and is maintained in a separate repository at 
-[https://github.com/casparderksen/vagrant-ansible-devbox.git](https://github.com/casparderksen/vagrant-ansible-devbox.git).
 
 ### External dependencies
 
