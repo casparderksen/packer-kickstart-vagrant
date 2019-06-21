@@ -102,7 +102,7 @@ packaging the final result with Packer.
 
 ## Development box
 
-This image is based on the Ansible box. It contains a Java / Angular / Docker / Oracle / DC/OS 
+This image is based on the Ansible box. It contains a Java / Angular / Docker / Oracle / DC/OS / Minikube
 development environment, with a number of pulled images.
 
 An Ansible provisioning run is executed from Packer for configuring the image,
@@ -186,8 +186,9 @@ The directory `vagrant/centos7-devbox` contains a Vagranfile for provisioning de
 
 The following playbooks are available:
 - `devbox`: Java / Angular / Docker development environment and tools
-- `minidcos`: Runs minidcos on Docker
-- `oracle`: Loads Oracle docker images for legacy development.
+- `minidcos`: runs minidcos DC/OS cluster on Docker
+- `minikube`: runs Minikube Kubernetes cluster on Docker 
+- `oracle`: loads Oracle docker images for legacy development.
 
 ## Centos 7 Oracle 12c box
 
