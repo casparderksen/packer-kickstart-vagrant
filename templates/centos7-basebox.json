@@ -1,7 +1,7 @@
 {
   "variables": { 
     "vm_name": "centos7-basebox",
-    "disk_size": "40000",
+    "disk_size": "80000",
     "memory": "1024",
     "cpus": "1",
     "ssh_username": "vagrant",
