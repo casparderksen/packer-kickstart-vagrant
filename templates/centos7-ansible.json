@@ -14,7 +14,8 @@
       "type": "shell",
       "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "scripts/ansible/install_ansible.sh"
+        "scripts/ansible/install_ansible.sh",
+        "scripts/ansible/install_galaxy_roles.sh"
       ]
     },
     {

@@ -22,3 +22,8 @@ fi
 
 log "Installing Ansible"
 yum -y install ansible
+
+# Configure Ansible
+
+log "Enabling additional roles path"
+sed -i -e 's/^#roles_path/roles_path/' /etc/ansible/ansible.cfg
