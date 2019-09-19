@@ -19,7 +19,6 @@
       "type": "shell",
       "execute_command": "echo {{user `ssh_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "scripts/basebox/disable_yum_repos.sh",
         "scripts/basebox/cleanup.sh",
         "scripts/basebox/zerodisk.sh"
       ]
