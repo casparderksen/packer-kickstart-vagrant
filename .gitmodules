@@ -1,4 +1,0 @@
-[submodule "vagrant/centos7-devbox"]
-	path = vagrant/centos7-devbox
-	url = https://github.com/casparderksen/vagrant-ansible-devbox.git
-	branch = packer-kickstart-vagrant

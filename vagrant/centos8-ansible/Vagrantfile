@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos8-ansible"
+
+  # VirtualBox provider configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "CentOS 8 - Ansible"
+    vb.memory = "1024"
+    vb.cpus = 2
+  end
+
+  # Perform Ansible provisioning
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "playbook.yml"
+    ansible.config_file = "ansible.cfg"
+    ansible.provisioning_path = "/vagrant/ansible"
+  end
+
+end

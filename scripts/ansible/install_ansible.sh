@@ -21,7 +21,7 @@ fi
 # Install Ansible
 
 log "Installing Ansible"
-yum -y install ansible
+dnf -y install ansible
 
 # Configure Ansible
 

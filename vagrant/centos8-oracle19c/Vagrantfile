@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  private_ip = "192.168.33.11"
+  config.vm.box = "centos8-oracle19c"
+
+  # Create a private network
+  config.vm.network "private_network", ip: private_ip
+
+  # Expose Oracle ports
+  config.vm.network "forwarded_port", guest: 1521, host: 1521
+  config.vm.network "forwarded_port", guest: 5500, host: 5500
+
+  $script = <<-SCRIPT
+    # Set correct ip address for hostname
+    sudo sed -ie "s/[0-9\.]\+\s\+oracle19c/$1 oracle19c/" /etc/hosts
+
+    # Wait for Oracle to start
+    tail -f /opt/oracle/product/19c/dbhome_1/rdbms/log/startup.log | sed '/warm started/ q'
+
+    # Initialize database
+    sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/01_set_password.sql
+    sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/01_create_user.sql
+  SCRIPT
+
+  # Setup database and create schemas
+  config.vm.provision "shell" do |s|
+    s.inline = $script
+    s.args = [private_ip]
+  end
+
+  # VirtualBox provider configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "CentOS 8 - Oracle 19c"
+    vb.memory = "8192"
+    vb.cpus = 2
+  end
+
+end

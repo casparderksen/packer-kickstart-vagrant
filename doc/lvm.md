@@ -1,6 +1,6 @@
 # Tips
 
-## Extend swap space (e.g. for Oracle RDBMS)
+## Extend swap space
 
     swapoff /dev/vg_system/lv_swap
     lvextend -L 4GB /dev/vg_system/lv_swap 

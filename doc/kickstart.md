@@ -15,7 +15,3 @@ To validate a file:
 Use 'grub-crypt --sha-512' to encrypt the root password. In the Kickstart file:
 
     rootpw --iscrypted <CRYPTED_PASSWD>
-
-# References
-
-See https://github.com/CentOS/sig-cloud-instance-build/blob/master/vagrant/centos7.ks for the standard CentOS vagrant image.

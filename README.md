@@ -4,50 +4,37 @@
 - [Prequisites](#prequisites)
 - [Makefile for Packer builds](#makefile-for-packer-builds)
 - [Boxes created with Packer](#boxes-created-with-packer)
-  - [CentOS 7 base box](#centos-7-base-box)
+  - [CentOS 8 base box](#centos-8-base-box)
   - [Ansible box](#ansible-box)
   - [Development box](#development-box)
-  - [Puppet box](#puppet-box)
-  - [Oracle 12c database](#oracle-12c-database)
-  - [Weblogic 12c](#weblogic-12c)
+  - [Oracle 19c database](#oracle-19c-database)
 - [Vagrant examples](#vagrant-examples)
-  - [Centos 7 base box](#centos-7-base-box)
-  - [Centos 7 Ansible box](#centos-7-ansible-box)
-  - [Centos 7 Development box](#centos-7-development-box)
-  - [Centos 7 Oracle 12c box](#centos-7-oracle-12c-box)
-  - [Centos 7 Weblogic 12c box](#centos-7-weblogic-12c-box)
-  - [Centos 7 Puppet box](#centos-7-puppet-box)
+  - [CentOS 8 base box](#centos-8-base-box)
+  - [CentOS 8 Ansible box](#centos-8-ansible-box)
+  - [CentOS 8 Development box](#centos-8-development-box)
+  - [CentOS 8 Oracle 19c box](#centos-8-oracle-19c-box)
+- [References](#references)
 
 # About
 
 This project builds CentOS boxes with Packer and Kickstart for use with Vagrant.
 Packer templates are provided for creating a minimal base box, and other boxes
 based on this base box. By reusing base boxes instead of provisioning each box from scratch, 
-build time is significantly reduced (similar to layered Docker images).
+build time is significantly reduced (similar to layered Docker image builds).
 
 An interesting box to build is a development environment that is provisioned with Ansible.
 The resulting box is suited for offline use (behind the corporate firewall).
-The development box is included as Git submodule and is maintained in a separate repository at 
-[casparderksen/vagrant-ansible-devbox](https://github.com/casparderksen/vagrant-ansible-devbox.git).
+
+See the `centos7` branch for Puppet, Weblogic 12c and Oracle 12c boxes (support discontinued by me).
 
 # Prequisites
 
-This project contains Git submodules. Type:
-
-    $ git clone --recursive https://github.com/casparderksen/packer-kickstart-vagrant.git
-    
-to clone recursively, or run
-
-    $  git submodule update --init
-    
-to check-out submodules after cloning.
-
 Download the following files to the `iso` directory:
 
-- [`CentOS-7-x86_64-Minimal-1810.iso`](http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso)
-- [`VBoxGuestAdditions_5.1.26.iso`](https://download.virtualbox.org/virtualbox/5.2.26/VBoxGuestAdditions_5.2.26.iso)
+- [`CentOS-8.2.2004-x86_64-minimal.iso`](http://isoredirect.centos.org/centos/8.2.2004/isos/x86_64/CentOS-8.2.2004-x86_64-minimal.iso)
+- [`VBoxGuestAdditions_6.1.14.iso`](https://download.virtualbox.org/virtualbox/6.1.14/VBoxGuestAdditions_6.1.14.iso)
 
-When using different versions, adapt the file names and SHA256 checksums in `templates/centos7-basebox` accordingly.
+When using different versions, adapt the file names and SHA256 checksums in `templates/centos8-basebox.json` accordingly.
 
 # Makefile for Packer builds
 
@@ -67,25 +54,27 @@ Type `make help` for this help. Type
 
     $ make boxes
     
+to build all boxes.
 
 # Boxes created with Packer
 
-## CentOS 7 base box
+## CentOS 8 base box
 
 The base box is a minimal image created from an ISO image installer
-with Packer and Kickstart. The following software is installed:
+with Packer and Kickstart. See also [Kickstart tjps](doc/kickstart.md). 
 
+The following software is installed:
 - Latest system updates
 - VirtualBox Guest Additions
 - Vagrant user and insecure key for vagrant provisioning
 - Local packages and customizations (specified in the `scripts` directory)
 
-Root password is `vagrant`.
+Password for root and vagrant users is `vagrant`. 
 
 The image contains small filesystems `/`, `/home`, `/tmp`, `/var` and `swap`.
 Post-provisioning scripts should create or extend filesystems before
-installing large software packages. Alternatively, modify the partition
-layout in `http/ks.cfg`.
+installing large software packages (see [LVM tips](doc/lvm.md). Alternatively, modify the partition
+layout in `http/centos8-basebox.ks`.
 
 System updates are performed from the Kickstart provisioning process, in order to compile
 VirtualBox guest additions against the latest kernel from the from Packer shell
@@ -100,108 +89,69 @@ using the Ansible playbook from the Vagrant example Ansible configuration.
 This allows development and testing of manifests in the Vagrant box and
 packaging the final result with Packer.
 
+Run a playbook from the command line as as follows:
+
+    $ cd /vagrant/ansible
+    $ ansible-playbook playbook.yml
+    
+See the [development box](#development-box) for a more elaborate Ansible example.
+
 ## Development box
 
-This image is based on the Ansible box. It contains a Java / Angular / Docker / Oracle / DC/OS / Minikube
-development environment, with a number of pulled images.
+This image is based on the Ansible box. It contains a Java / Angular / Python / Docker / Minikube
+development environment.
 
-An Ansible provisioning run is executed from Packer for configuring the image,
+An Ansible provisioning run is executed from Packer for configuring the image and tooling
 using the Ansible code base from the Vagrant development box example configuration.
 This allows development and testing of playbooks in the Vagrant box and
 packaging the final result with packer.
 
 ### External dependencies
 
-See [README.md](vagrant/centos7-devbox/README.md) for providing external dependencies of the development box.
+See [README.md](vagrant/centos8-devbox/README.md) for providing external dependencies of the development box.
 
-## Puppet box
+## Oracle 19c database
 
-This image is a based on the base box. The following software is installed:
-- Puppet Open Source for masterless configuration
-- R10K code manager
-- Hiera EYaml for encrypting sensitive data
-
-A Puppet provisiong run is executed from Packer for configuring the image,
-using the Puppet code base from the Vagrant example Puppet configuration.
-This allows development and testing of manifests in the Vagrant box and
-packaging the final result with Packer.
-
-## Oracle 12c database
-
-Pre-packaged box with Oracle 12c Enterprise Edition database server.
+Pre-packaged box with Oracle 19c Enterprise Edition database server. 
+See [Oracle tips](doc/oracle19c.md) for details.
 
 ### External dependencies
 
-As a prerequisite, download the file `linuxx64_12201_database.zip` to 
-the directory`oracle12c/stage`.
-
-## Weblogic 12c
-
-Pre-packaged Weblogic server with an admin server and two managed hosts.
-The domain configuration can be adjusted from the WLST scripts.
-The following software is installed:
-- Java JDK8
-- Weblogic 12c AdminServer
-- A domain with name 'mydomain'
-- Standalone managed servers 'server1' and 'server2'
-- Systemd services definitions for nodemanager, adminserver, server1, server2
-- Apache Maven
-- Apache Maven Weblogic plugin
-
-### External dependencies
-
-As a prerequisite, download and add the following binaries to the directory `weblogic12c/stage`
-
-- `jdk-8u192-linux-x64.rpm`
-- `apache-maven-3.5.4-bin.tar.gz`
-- `fmw_12.2.1.2.0_wls_quick.jar`
-
-### Weblogic Maven plugin
-
-To test the weblogic-maven plugin as user oracle:
-
-    mvn help:describe -DgroupId=com.oracle.weblogic -DartifactId=weblogic-maven-plugin -Dversion=12.2.1-2-0
-
-Configure Maven to install artifacts to a repository manager, or simply
-copy the contents of the .m2 directory to your own local repository. 
-
-See https://docs.oracle.com/middleware/1221/wls/WLPRG/maven.htm#WLPRG585 for using Maven with Weblogic.
+Go to 
+[Oracle 19c database donwloads (OTN)](https://www.oracle.com/database/technologies/oracle19c-linux-downloads.html)
+and download the file `oracle-database-ee-19c-1.0-1.x86_64.rpm` from to the directory`oracle19c/stage`.
 
 # Vagrant examples
 
 The directory `vagrant` contains example Vagrant configurations
 for running the Packer generated boxes with Vagrant.
 
-## Centos 7 base box
+## CentOS 8 base box
 
-The directory `vagrant/centos7-basebox` contains a Vagranfile for running the Centos7 base box.
+The directory `vagrant/centos8-basebox` contains a Vagranfile for running the CentOS 8 base box.
 
-## Centos 7 Ansible box
+## CentOS 8 Ansible box
 
-The directory `vagrant/centos7-ansible` contains a Vagranfile for provisioning boxes with Ansible.
+The directory `vagrant/centos8-ansible` contains a Vagranfile for provisioning boxes with Ansible.
 
-## Centos 7 Development box
+## CentOS 8 Development box
 
-The directory `vagrant/centos7-devbox` contains a Vagranfile for provisioning development environments.
+The directory `vagrant/centos8-devbox` contains a Vagranfile for provisioning development environments.
 
-The following playbooks are available:
-- `devbox`: Java / Angular / Docker development environment and tools
-- `minidcos`: runs minidcos DC/OS cluster on Docker
-- `minikube`: runs Minikube Kubernetes cluster on Docker 
-- `oracle`: loads Oracle docker images for legacy development.
+The following example playbooks are available:
+- `devbox.yml`: Java / Angular / Python / Docker development environment and misc tools
+- `docker.yml`: install Docker and donwload images
+- `docker-oracle.yml`: loads Oracle docker images for Oracle RDBMS development.
+- `gnome.yml`: configure graphical environment
+- `local.yml`: customize certificates, network access and tooling
+- `minikube.yml`: runs Minikube Kubernetes cluster on Docker 
+- `nginx.yml`: configure Nginx
 
-## Centos 7 Oracle 12c box
+## CentOS 8 Oracle 19c box
 
-The directory `vagrant/centos7-oracle12c` contains a Vagranfile for running the Oracle 12c database box.
+The directory `vagrant/centos8-oracle19c` contains a Vagranfile for running the Oracle 19c database box.
 
-## Centos 7 Weblogic 12c box
+# References
 
-The directory `vagrant/centos7-weblogic12c` contains a Vagranfile for running the Weblogic 12c box.
-
-## Centos 7 Puppet box
-
-The directory `vagrant/centos7-puppet` contains a Vagranfile for provisioning boxes with Puppet.
-
-The following roles are available:
-- `default`: simple server configuration baseline
-- `development`: installs PDK and misc tools
+- [CentOS 8 cloud build](https://github.com/CentOS/sig-cloud-instance-build/blob/master/vagrant/centos8.ks)
+- [Oracle Database 19c Installation On Oracle Linux 8 (OL8)](https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8)

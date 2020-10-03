@@ -1,0 +1,19 @@
+[Unit]
+Description=Oracle Database Service
+After=syslog.target network.target
+
+[Service]
+# systemd ignores PAM limits, so set any necessary limits in the service.
+# Not really a bug, but a feature.
+# https://bugzilla.redhat.com/show_bug.cgi?id=754285
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+Environment=ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
+Type=forking
+User=oracle
+Restart=no
+ExecStart=/opt/oracle/product/19c/dbhome_1/bin/dbstart $ORACLE_HOME
+ExecStop=/opt/oracle/product/19c/dbhome_1/bin/dbshut $ORACLE_HOME
+
+[Install]
+WantedBy=multi-user.target
