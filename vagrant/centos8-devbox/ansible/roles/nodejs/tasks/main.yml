@@ -1,0 +1,10 @@
+---
+
+- name: Install Node.js 12
+  package:
+    name: '@nodejs:12'
+    state: present
+
+- name: Create NPM settings
+  include: npm_config.yml
+  with_items: "{{ (npm_config | default({})) | dict2items }}"

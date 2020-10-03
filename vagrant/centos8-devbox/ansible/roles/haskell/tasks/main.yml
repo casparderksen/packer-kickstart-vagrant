@@ -1,0 +1,9 @@
+---
+
+- name: Install Haskell
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ghc
+    - ghc-Cabal

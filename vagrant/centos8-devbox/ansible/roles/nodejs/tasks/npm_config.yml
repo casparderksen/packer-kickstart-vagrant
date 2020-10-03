@@ -1,0 +1,4 @@
+---
+
+- name: Configure NPM parameter
+  command: "npm config set '{{ item.key }}' '{{ item.value }}' --global"

@@ -1,0 +1,14 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Extend the / logical volume
+      lvol:
+        vg: vg_system
+        lv: root
+        size: 10G
+        resizefs: true
+    - include_role:
+        name: gnome
+

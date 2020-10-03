@@ -1,0 +1,19 @@
+---
+
+- name: Create .docker directory
+  file:
+    path: "~{{ user }}/.docker"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+    mode: 0755
+
+- name: Create config.json
+  template:
+    src: config.json.j2
+    dest: "~{{ user }}/.docker/config.json"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+
+

@@ -1,0 +1,22 @@
+---
+- name: Install DVC repository
+  command:
+    cmd: dnf config-manager --add-repo https://dvc.org/rpm/dvc.repo
+    creates: /etc/yum.repos.d/dvc.repo
+    warn: false
+
+- name: Install DVC (Data Version Control)
+  package:
+    name: dvc
+    state: present
+
+- name: Disable DVC usage analytics
+  command:
+    cmd: dvc config --system core.analytics false
+    creates: /etc/xdg/dvc/config
+
+- name: Configure DVC settings
+  include: dvc_config.yml
+  with_items: "{{ dvc_users }}"
+  loop_control:
+    loop_var: user

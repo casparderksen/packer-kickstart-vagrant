@@ -1,0 +1,24 @@
+---
+
+- name: Test if saved Oracle Docker image exists
+  stat:
+    path: "{{ docker_oracle_image_file }}"
+  register: docker_oracle_image
+
+# Execute docker load command instead of docker_image due to bug with large files
+- name: Load Oracle RDBMS Docker image from file
+  block:
+  - name: Get Oracle Docker image info
+    docker_image_info:
+      name: "{{ docker_oracle_image_name }}"
+    register: docker_oracle_info
+  - name: Load Oracle Docker image
+    command: docker load -i "{{ docker_oracle_image_file }}"
+    when: docker_oracle_image.stat.exists and docker_oracle_info.images | length == 0
+
+- name: Copy Docker Oracle example
+  include: docker_oracle_example.yml
+  with_items: "{{ docker_oracle_users }}"
+  loop_control:
+    loop_var: user
+

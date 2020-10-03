@@ -1,0 +1,11 @@
+---
+
+- name: Install SDKMAN! for user {{ user }}
+  shell: curl -s https://get.sdkman.io | bash
+  args:
+    creates: "~{{ user }}/.sdkman"
+    warn: false
+  become: yes
+  become_user: "{{ user }}"
+
+

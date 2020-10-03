@@ -1,0 +1,37 @@
+---
+
+- name: Hash proxy password
+  shell: "echo '{{ cntlm_config.password }}' | cntlm -H -d {{ cntlm_config.domain }} -u {{ cntlm_config.username }}"
+  register: cntlm_hash_cmd
+
+- set_fact:
+    cntlm_pass_ntlmv2: "{{ cntlm_hash_cmd.stdout_lines[3].split()[1] }}"
+
+- set_fact:
+    cntlm_proxy_url: "http://localhost:{{ cntlm_config.port | default('3128') }}"
+
+- name: Configure /etc/cntlm.conf
+  template:
+    src: cntlm.conf.j2
+    dest: /etc/cntlm.conf
+    mode: 0600
+  notify: restart cntlmd
+
+- name: Add CNTLM profile script with proxy settings
+  template:
+    src: cntlm.sh.j2
+    dest: /etc/profile.d/cntlm.sh
+    mode: 0644
+
+- name: Configure CNTLM as DNF proxy
+  lineinfile:
+    path: /etc/dnf/dnf.conf
+    insertafter: "^\\[main\\]"
+    regexp: "^proxy="
+    line: "proxy={{ cntlm_proxy_url }}"
+
+- name: Ensure CNTLM daemon is started at boot and running
+  service:
+    name: cntlmd
+    state: started
+    enabled: yes

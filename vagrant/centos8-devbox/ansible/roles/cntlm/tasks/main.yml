@@ -1,0 +1,25 @@
+---
+
+- name: Find CNTLM package
+  find:
+    paths: "{{ cntlm_rpm_dir }}"
+    patterns: "*.rpm"
+  register: rpm_files
+
+- name: Install CNTLM package
+  dnf:
+    name: "{{ rpm_files.files | map(attribute='path') | list }}"
+    disable_gpg_check: yes
+    state: present
+
+- name: Fix missing pid dir for cntlmd
+  file:
+    owner: cntlm
+    group: cntlm
+    path: /var/run/cntlm
+    state: directory
+    mode: 0755
+
+- name: Configure CNTLM
+  include: cntlm_config.yml
+  when: cntlm_config is defined

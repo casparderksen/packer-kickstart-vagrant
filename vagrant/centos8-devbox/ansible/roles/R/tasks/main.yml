@@ -1,0 +1,25 @@
+---
+
+- name: Enable EPEL repo
+  dnf:
+    name: epel-release
+    state: present
+
+- name: Test if PowerTools repository is enabled
+  shell: "dnf repolist | grep PowerTools"
+  args:
+    warn: false
+  ignore_errors: true
+  register: powertools_repo_enabled
+
+# Config manager is not supported by Ansible dnf (https://github.com/ansible/ansible/issues/46963)
+- name: Enable PowerTools repository
+  command:
+    cmd: dnf config-manager --set-enabled PowerTools
+    warn: no
+  when: powertools_repo_enabled is failed
+
+- name: Install R
+  package:
+    name: R
+    state: present

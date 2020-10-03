@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Extend the /var logical volume
+      lvol:
+        vg: vg_system
+        lv: var
+        size: 30G
+        resizefs: true
+    - name: Extend the /tmp logical volume
+      lvol:
+        vg: vg_system
+        lv: tmp
+        size: 3G
+        resizefs: true
+
+- hosts: all
+  become: yes
+  roles:
+    - docker
+    - docker-images
+
+

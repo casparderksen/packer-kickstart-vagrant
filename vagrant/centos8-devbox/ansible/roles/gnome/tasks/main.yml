@@ -1,0 +1,23 @@
+---
+
+- name: Install the 'Server with GUI' environment group
+  package:
+    name: "@Server with GUI"
+    state: present
+
+- name: Get default runlevel
+  command: systemctl get-default
+  register: default_runlevel
+
+- name: Set default runlevel to graphical if not default
+  command: systemctl set-default graphical.target
+  when: default_runlevel.stdout != "graphical.target"
+
+- name: Check if graphical runlevel is active
+  command: systemctl is-active graphical.target
+  failed_when: False
+  register: graphical_active
+
+- name: Switch to graphical runlevel if not active
+  command: systemctl isolate graphical.target
+  when: graphical_active.stdout != "active"

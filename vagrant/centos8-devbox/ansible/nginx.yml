@@ -1,0 +1,63 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+  - include_role:
+      name: geerlingguy.nginx
+    vars:
+      nginx_worker_processes: auto
+      nginx_error_log: "/var/log/nginx/error.log warn"
+      nginx_access_log: "/var/log/nginx/access.log main buffer=16k"
+      nginx_pidfile: /run/nginx.pid
+      nginx_keepalive_timeout: "65"
+      nginx_keepalive_requests: "100"
+      nginx_server_tokens: "off"
+      nginx_client_max_body_size: "64m"
+      nginx_extra_http_options: |
+        proxy_buffering    off;
+        proxy_set_header   X-Real-IP $remote_addr;
+
+        # Headers expected by Spring Boot
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Port $server_port;
+        proxy_set_header   Host $http_host;
+
+        # Websocket proxying (http://nginx.org/en/docs/http/websocket.html)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      nginx_vhosts:
+        - filename: "default.conf"
+          listen: "80 default_server"
+          server_name: "_"
+          root: "/usr/share/nginx/html"
+          extra_parameters: |
+            location / {
+                # Fallback to Angular router (https://angular.io/guide/deployment#server-configuration)
+                try_files $uri $uri/ /index.html;
+            }
+        - filename: "frontend_api.conf"
+          listen: "80"
+          server_name: "_"
+          extra_parameters: |
+            location /api/foo {
+                proxy_pass http://127.0.0.1:8080/;
+            }
+            location /api/bar {
+                proxy_pass http://127.0.0.1:8081/;
+            }
+        - filename: "backend_api.conf"
+          listen: "80"
+          server_name: "_"
+          extra_parameters: |
+            location /api/fu {
+                proxy_pass http://127.0.0.1:8080/;
+            }
+            location /api/barz {
+                proxy_pass http://127.0.0.1:8081/;
+            }
+
+  - name: Test Nginx configuration
+    command: nginx -t

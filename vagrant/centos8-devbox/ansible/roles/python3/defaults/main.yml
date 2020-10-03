@@ -1,0 +1,7 @@
+---
+
+venv_dir: venv
+venv_name: default
+
+python_users:
+  - vagrant

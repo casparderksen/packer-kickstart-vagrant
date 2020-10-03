@@ -1,0 +1,20 @@
+---
+
+- name: Create .sbt directory
+  file:
+    path: "~{{ user }}/.sbt"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+    mode: 0755
+
+- name: Create repositories config
+  template:
+    src: repositories.j2
+    dest: "~{{ user }}/.sbt/repositories.xml"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  when: repositories is defined
+
+

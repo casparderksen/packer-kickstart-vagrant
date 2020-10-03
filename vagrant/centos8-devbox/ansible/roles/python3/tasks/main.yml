@@ -1,0 +1,15 @@
+---
+
+- name: Install Python3
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3
+    - python3-devel
+
+- name: Configure virtual environments
+  include: python_config.yml
+  with_items: "{{ python_users }}"
+  loop_control:
+    loop_var: user

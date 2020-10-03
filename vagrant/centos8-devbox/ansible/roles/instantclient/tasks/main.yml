@@ -1,0 +1,43 @@
+---
+
+- name: Install Oracle Instantclient
+  block:
+    - name: Find sqlplus RPM packages
+      find:
+        paths: "{{ instantclient_rpm_dir }}"
+        patterns: "*.rpm"
+      register: rpm_files
+    - name: Intall sqlplus RPM packages
+      dnf:
+        name: "{{ rpm_files.files | map(attribute='path') | list}}"
+        disable_gpg_check: yes
+        state: present
+    - name: Install legacy libnsl library (required by sqlplus)
+      dnf:
+        name: libnsl
+        state: present
+
+- name: Add instantclient profile script
+  template:
+    src: instantclient.sh.j2
+    dest: /etc/profile.d/instantclient.sh
+    mode: 0644
+
+- name: Create directory for tnsnames.ora
+  file:
+    path: "{{ instantclient_dir }}/client64/lib/network/admin"
+    state: directory
+
+- name: Create tnsnames.ora
+  template:
+    src: tnsnames.ora.j2
+    dest: "{{ instantclient_dir }}/client64/lib/network/admin/tnsnames.ora"
+    mode: 0644
+  when: tnsnames is defined
+
+# See https://medium.com/@FranckPachot/19c-instant-client-and-docker-1566630ab20e
+- name: Add sqlnet.ora (DISABLE_OOB=ON)
+  copy:
+    src: sqlnet.ora
+    dest: "{{ instantclient_dir }}/client64/lib/network/admin"
+    mode: 0644

@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+  - name: Extend the /home logical volume
+    lvol:
+      vg: vg_system
+      lv: home
+      size: 5G
+      resizefs: true
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - include_role:
+        name: minikube
+      vars:
+        minikube_create_cluster: true
+
+
+

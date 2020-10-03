@@ -1,0 +1,8 @@
+---
+
+docker_compose_version: 1.27.4
+
+docker_users:
+  - vagrant
+
+docker_options: -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://127.0.0.1:2375

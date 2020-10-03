@@ -1,0 +1,11 @@
+---
+
+- name: Configure Vim to recognize DVC files as YAML
+  blockinfile:
+    path: "~{{ user }}/.vim"
+    create: true
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    block: |
+      " DVC
+      autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml

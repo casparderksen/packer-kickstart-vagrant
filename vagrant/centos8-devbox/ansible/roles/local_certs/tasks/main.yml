@@ -1,0 +1,22 @@
+---
+
+- name: Add local Java trust store
+  copy:
+    src: jssecacerts
+    dest: /etc/pki/java
+
+- name: Find Java JRE location
+  shell: type -p java | xargs readlink -f | xargs dirname | xargs dirname
+  register: java_home
+
+- name: Link local Java trust store to JRE
+  file:
+    src: /etc/pki/java/jssecacerts
+    dest: "{{ java_home.stdout }}/lib/security/jssecacerts"
+    state: link
+
+- name: Add local Linux trust store
+  copy:
+    src: local_trust_chain.cer
+    dest: /etc/pki/ca-trust/source/anchors
+  notify: update CA trust

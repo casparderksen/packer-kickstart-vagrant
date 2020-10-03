@@ -1,0 +1,19 @@
+---
+
+- name: Create Python environments directory
+  file:
+    path: "~{{ user }}/{{venv_dir}}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+    mode: 0755
+
+- name: Create virtual environment
+  become: yes
+  become_user: "{{ user }}"
+  command: "python3 -m venv {{venv_name}}"
+  args:
+    chdir: "~{{ user }}/{{venv_dir}}"
+    creates: "{{venv_name}}"
+
+

@@ -1,0 +1,7 @@
+---
+
+- name: Install SDKMAN!
+  include: sdkman.yml
+  with_items: "{{ sdkman_users }}"
+  loop_control:
+    loop_var: user

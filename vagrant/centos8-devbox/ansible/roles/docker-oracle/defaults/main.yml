@@ -1,0 +1,9 @@
+---
+
+docker_oracle_image_file: /vagrant/files/docker-oracle/oradb-193000-ee.tgz
+docker_oracle_image_name: oracle/database:19.3.0-ee
+
+docker_oracle_users:
+  - vagrant
+
+

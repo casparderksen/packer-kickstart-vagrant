@@ -1,0 +1,6 @@
+---
+
+cntlm_rpm_dir: /vagrant/files/cntlm
+
+daemon:
+

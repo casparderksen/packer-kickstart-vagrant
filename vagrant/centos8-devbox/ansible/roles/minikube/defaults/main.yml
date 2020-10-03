@@ -1,0 +1,7 @@
+---
+
+minikube_user: vagrant
+minikube_bin_url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+minikube_bin: /usr/local/bin/minikube
+kubectl_proxy_port: 8001
+minikube_create_cluster: false

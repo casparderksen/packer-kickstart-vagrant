@@ -1,0 +1,7 @@
+---
+
+- name: "Install Angular CLI"
+  npm:
+    name: "@angular/cli"
+    version: "{{ angular_version }}"
+    global: yes

@@ -1,0 +1,54 @@
+---
+
+- name: Install minikube executable
+  get_url:
+    url: "{{ minikube_bin_url }}"
+    dest: "{{ minikube_bin }}"
+    mode: '0755'
+
+- name: Install Minikube
+  block:
+    - name: Get default Minikube driver
+      command: "{{ minikube_bin }} config get driver"
+      ignore_errors: yes
+      register: minikube_driver
+    - name: Make Docker default Minikube driver
+      command: "{{ minikube_bin }} config set driver docker"
+      when: minikube_driver.stdout != "docker"
+    - name: Test if Minikube cache exists
+      stat:
+        path: "~{{ minikube_user }}.minikube/cache"
+      register: minikube_cache
+    - name: Download and cache Minikube files
+      command: "{{ minikube_bin }} start --download-only"
+      when: not minikube_cache.stat.exists
+  become: true
+  become_user: "{{ minikube_user }}"
+
+- name: Add Kubernetes Yum repo
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes YUM repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: Install kubectl executable
+  package:
+    name: kubectl
+    state: present
+
+- name: Create Minikube cluster
+  block:
+    - name: Get Minikube cluster status
+      command: "{{ minikube_bin }} status"
+      register: minikube_status
+      failed_when: false
+    - name: Start Minikube cluster
+      command: "{{ minikube_bin }} start"
+      when: minikube_status.stdout.find('Running') == -1
+      notify: start kubectl proxy
+  become: true
+  become_user: "{{ minikube_user }}"
+  when: minikube_create_cluster

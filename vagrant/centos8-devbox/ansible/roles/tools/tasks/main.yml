@@ -1,0 +1,40 @@
+---
+
+- name: Install the 'Development tools' package group
+  dnf:
+    name: "@Development tools"
+    state: present
+
+- name: Install command line tools
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bash-completion
+    - git-core
+    - git-extras
+    - git-lfs
+    - git-tools
+#    - gitflow
+    - graphviz
+#    - httpie
+    - jose
+    - jq
+    - lsof
+    - make
+    - man
+    - man-pages
+    - net-tools
+    - rsync
+    - s3cmd
+    - screen
+    - strace
+    - sysstat
+    - vim-enhanced
+    - wget
+    - zip
+    - unzip
+
+- name: Install additional command tools via pip
+  pip:
+    name: httpie

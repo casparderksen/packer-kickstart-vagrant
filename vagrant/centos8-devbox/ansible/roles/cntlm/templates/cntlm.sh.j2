@@ -1,0 +1,5 @@
+# /etc/profile.d/cntlm.sh - Managed by Ansible - do not change
+export http_proxy={{ cntlm_proxy_url }}
+export https_proxy={{ cntlm_proxy_url }}
+export ftp_proxy={{ cntlm_proxy_url }}
+export no_proxy=127.0.0.1,localhost

@@ -1,0 +1,13 @@
+---
+
+- name: start kubectl proxy
+  vars:
+    msg: |
+      Run
+          kubectl proxy --address='0.0.0.0'
+      to access the dashboard at
+          http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/
+  debug:
+    msg: "{{ msg.split('\n') }}"
+  become: true
+  become_user: "{{ minikube_user }}"

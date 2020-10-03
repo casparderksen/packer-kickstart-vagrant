@@ -1,0 +1,15 @@
+---
+
+- name: Install Nginx
+  package:
+    name: nginx
+    state: present
+
+- name: Ensure Nginx is started at boot and running
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Configure SE Linux policy for Nginx reverse proxy
+  seboolean: name=httpd_can_network_connect state=yes persistent=yes

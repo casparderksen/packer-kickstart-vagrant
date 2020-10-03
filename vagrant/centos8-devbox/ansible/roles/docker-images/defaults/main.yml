@@ -1,0 +1,19 @@
+---
+
+docker_images:
+  - cassandra
+  - confluentinc/cp-kafka
+  - confluentinc/cp-zookeeper
+  - docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+  - docker.elastic.co/logstash/logstash:7.9.1
+  - docker.elastic.co/kibana/kibana:7.9.1
+  - jaegertracing/all-in-one
+  - jenkins/jenkins:lts
+  - nginx
+  - postgres
+  - timescale/timescaledb:latest-pg12
+  - prom/prometheus
+  - prom/alertmanager
+  - prom/node-exporter
+  - grafana/grafana
+  - fluent/fluentd
