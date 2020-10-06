@@ -1,0 +1,13 @@
+---
+
+- name: Install Minio Client (mc)
+  get_url:
+    url: "{{ mc_bin_url }}"
+    dest: "{{ mc_bin }}"
+    mode: '0755'
+
+- name: Configure MC settings
+  include: mc_config.yml
+  with_items: "{{ mc_users }}"
+  loop_control:
+    loop_var: user

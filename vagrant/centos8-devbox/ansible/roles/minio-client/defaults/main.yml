@@ -1,0 +1,7 @@
+---
+
+mc_bin_url: https://dl.min.io/client/mc/release/linux-amd64/mc
+mc_bin: /usr/local/bin/mc
+
+mc_users:
+  - vagrant

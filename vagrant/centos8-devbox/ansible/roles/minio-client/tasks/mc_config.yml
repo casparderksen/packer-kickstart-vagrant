@@ -1,0 +1,18 @@
+---
+
+- name: Enable MC shell autocompletion
+  command:
+    cmd: "{{ mc_bin }} --autocompletion"
+  become: true
+  become_user: "{{ user }}"
+
+- name: Configure MC storage services
+  command:
+    cmd: "{{ mc_bin }} alias set {{ service.alias }} {{ service.endpoint }} {{ service.access_key }} {{ service.secret_key }}"
+  ignore_errors: true
+  when: services is defined
+  with_items: "{{ services }}"
+  loop_control:
+    loop_var: service
+  become: true
+  become_user: "{{ user }}"

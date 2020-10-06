@@ -1,4 +1,5 @@
 ---
+
 - name: Install DVC repository
   command:
     cmd: dnf config-manager --add-repo https://dvc.org/rpm/dvc.repo

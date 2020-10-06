@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
   # Note: ip address must match ip address used in ansible/local.yml
   private_ip = "192.168.33.11"
-  config.vm.box = "centos8-ansible"
+  config.vm.box = "centos8-devbox"
 
   # Create a private network
   config.vm.network "private_network", ip: private_ip
@@ -26,6 +26,9 @@ Vagrant.configure("2") do |config|
 
   # Kubernetes API (via kubectl proxy)
   config.vm.network :forwarded_port, guest: 8001, host: 8001
+
+  # Minio S3 API
+  config.vm.network :forwarded_port, guest: 9000, host: 9000
 
   # CNTLM proxy
   config.vm.network :forwarded_port, guest: 3128, host: 3128

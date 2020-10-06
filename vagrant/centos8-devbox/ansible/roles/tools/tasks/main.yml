@@ -35,6 +35,7 @@
     - zip
     - unzip
 
-- name: Install additional command tools via pip
+- name: Install additional command line tools via pip
   pip:
     name: httpie
+

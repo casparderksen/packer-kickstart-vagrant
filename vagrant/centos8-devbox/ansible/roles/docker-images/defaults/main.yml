@@ -9,6 +9,7 @@ docker_images:
   - docker.elastic.co/kibana/kibana:7.9.1
   - jaegertracing/all-in-one
   - jenkins/jenkins:lts
+  - minio/minio
   - nginx
   - postgres
   - timescale/timescaledb:latest-pg12

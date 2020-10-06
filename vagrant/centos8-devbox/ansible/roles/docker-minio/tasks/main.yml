@@ -1,0 +1,22 @@
+---
+
+- name: Create Minio Docker volume
+  docker_volume:
+    name: minio
+
+- name: Create Minio Docker container
+  docker_container:
+    name: minio
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - "minio:/data"
+    env:
+      MINIO_ACCESS_KEY: "{{ minio_access_key }}"
+      MINIO_SECRET_KEY: "{{ minio_secret_key }}"
+
+- name: Install Python Minio library
+  pip:
+    name: minio

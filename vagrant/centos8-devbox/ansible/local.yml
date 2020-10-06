@@ -70,7 +70,7 @@
         name: docker-minio
 
     - include_role:
-        name: mc
+        name: minio-client
       vars:
         services:
           - alias: minio

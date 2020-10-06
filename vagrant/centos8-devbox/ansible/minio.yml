@@ -1,0 +1,33 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+  - name: Extend the /var logical volume
+    lvol:
+      vg: vg_system
+      lv: var
+      size: 30G
+      resizefs: true
+
+- hosts: all
+  become: yes
+
+  vars:
+    minio_access_key: "minio"
+    minio_secret_key: "minio123"
+
+  tasks:
+    - include_role:
+        name: docker-minio
+    - include_role:
+        name: minio-client
+      vars:
+        services:
+          - alias: minio
+            endpoint: http://127.0.0.1:9000
+            access_key: "{{ minio_access_key }}"
+            secret_key: "{{ minio_secret_key }}"
+
+
+

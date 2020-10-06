@@ -30,6 +30,7 @@
     - docker
     - dvc
     - maven
+    - mc
 #    - minikube
     - nodejs
     - openjdk
