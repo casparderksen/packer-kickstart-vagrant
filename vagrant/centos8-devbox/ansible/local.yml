@@ -18,12 +18,17 @@
     - name: hostname
       prompt: "Hostname (host PC)"
       private: no
+    - name: private_ip
+      prompt: "IP of VM (private_ip in Vagrantfile)"
+      private: no
+      default: "192.168.33.10"
+
+  vars:
+    http_proxy_url: "http://{{ private_ip }}:3128"
+    minio_access_key: "minio"
+    minio_secret_key: "minio123"
 
   tasks:
-
-# IP must be the same as in Vagrantfile
-    - set_fact:
-        http_proxy_url: "http://192.168.33.10:3128"
 
     - block:
       - name: Set Git user name
@@ -60,6 +65,18 @@
             - registry.local
           registry-mirrors:
             - https://registry.local
+
+    - include_role:
+        name: docker-minio
+
+    - include_role:
+        name: mc
+      vars:
+        services:
+          - alias: minio
+            endpoint: http://127.0.0.1:9000
+            access_key: "{{ minio_access_key }}"
+            secret_key: "{{ minio_secret_key }}"
 
     - name: Encrypt password for Maven
       command: "mvn --encrypt-password {{ password }}"
@@ -116,7 +133,7 @@
             - nexus3
 
     - include_role:
-        name: node
+        name: nodejs
       vars:
         npm_config:
           npm_registry: https://nexus3.local/repository/npm-all
