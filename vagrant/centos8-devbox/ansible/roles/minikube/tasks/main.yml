@@ -6,15 +6,14 @@
     dest: "{{ minikube_bin }}"
     mode: '0755'
 
-- name: Install Minikube
+- name: Configure Minikube and download files
   block:
-    - name: Get default Minikube driver
-      command: "{{ minikube_bin }} config get driver"
-      ignore_errors: yes
-      register: minikube_driver
     - name: Make Docker default Minikube driver
       command: "{{ minikube_bin }} config set driver docker"
-      when: minikube_driver.stdout != "docker"
+    - name: Configure default memory for Minikube
+      command: "{{ minikube_bin }} config set memory {{ minikube_memory }}"
+    - name: Configure default cpus for Minikube
+      command: "{{ minikube_bin }} config set cpus {{ minikube_cpus }}"
     - name: Test if Minikube cache exists
       stat:
         path: "~{{ minikube_user }}.minikube/cache"

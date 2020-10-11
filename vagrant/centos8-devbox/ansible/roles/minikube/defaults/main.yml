@@ -5,3 +5,6 @@ minikube_bin_url: https://storage.googleapis.com/minikube/releases/latest/miniku
 minikube_bin: /usr/local/bin/minikube
 kubectl_proxy_port: 8001
 minikube_create_cluster: false
+minikube_memory: 4096
+minikube_cpus: 2
+
