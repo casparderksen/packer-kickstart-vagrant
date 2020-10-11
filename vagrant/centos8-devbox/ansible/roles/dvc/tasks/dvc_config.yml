@@ -2,10 +2,27 @@
 
 - name: Configure Vim to recognize DVC files as YAML
   blockinfile:
-    path: "~{{ user }}/.vim"
     create: true
+    path: "~{{ user }}/.vim"
     owner: "{{ user }}"
     group: "{{ user }}"
     block: |
       " DVC
       autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
+
+- name: Create directory for S3 credentials
+  file:
+    path: "~{{ user }}/.aws"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+    mode: 0700
+
+- name: Setup S3 credentials (~/.aws/credentials.j2)
+  template:
+    src: credentials.j2
+    dest: "~{{ user }}/.aws/credentials"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0600
+  when: credentials is defined

@@ -1,0 +1,8 @@
+---
+
+- name: Copy DVC example project
+  copy:
+    src: dvc-example
+    dest: "~{{ user }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"

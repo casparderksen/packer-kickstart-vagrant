@@ -11,13 +11,27 @@
     name: dvc
     state: present
 
-- name: Disable DVC usage analytics
-  command:
-    cmd: dvc config --system core.analytics false
-    creates: /etc/xdg/dvc/config
+- name: Check status of DVC global config file
+  stat:
+    path: /etc/xdg/dvc/config
+  register: dvc_system_config
+
+- name: Configure DVC
+  block:
+    - name: Disable anlytics
+      command: dvc config --system core.analytics false
+    - name: Disable update checks
+      command: dvc config --system core.check_update false
+  when: not dvc_system_config.stat.exists
 
 - name: Configure DVC settings
   include: dvc_config.yml
+  with_items: "{{ dvc_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Copy DVC example project
+  include: dvc_example.yml
   with_items: "{{ dvc_users }}"
   loop_control:
     loop_var: user

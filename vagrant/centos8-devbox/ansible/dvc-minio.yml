@@ -28,6 +28,13 @@
             endpoint: http://127.0.0.1:9000
             access_key: "{{ minio_access_key }}"
             secret_key: "{{ minio_secret_key }}"
+    - include_role:
+        name: dvc
+      vars:
+        credentials:
+          - name: default
+            access_key: "{{ minio_access_key }}"
+            secret_key: "{{ minio_secret_key }}"
 
 
 

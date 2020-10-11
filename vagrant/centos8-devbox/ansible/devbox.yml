@@ -30,8 +30,8 @@
     - docker
     - dvc
     - maven
-    - mc
 #    - minikube
+    - minio-client
     - nodejs
     - openjdk
     - python3
