@@ -30,6 +30,7 @@
     - screen
     - strace
     - sysstat
+    - tree
     - vim-enhanced
     - wget
     - zip
