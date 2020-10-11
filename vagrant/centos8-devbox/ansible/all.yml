@@ -37,6 +37,7 @@
 #    - local_certs
     - maven
     - minikube
+    - minio-client
     - nginx
     - nodejs
     - openjdk
