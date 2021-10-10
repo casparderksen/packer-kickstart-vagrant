@@ -21,7 +21,8 @@ Vagrant.configure("2") do |config|
 
     # Initialize database
     sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/01_set_password.sql
-    sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/01_create_user.sql
+    sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/02_add_service_db1.sql
+    sudo -i -u oracle sqlplus / as sysdba < /vagrant/sql/03_create_user.sql
   SCRIPT
 
   # Setup database and create schemas
