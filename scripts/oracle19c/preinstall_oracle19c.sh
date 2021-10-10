@@ -28,6 +28,8 @@ ip_address=$(ip address show dynamic | grep 'inet ' | awk '{print $2}' | cut -f1
 echo "${ip_address} $(hostname -s) $(hostname)" >> /etc/hosts
 
 # Install and perform Oracle 19c installation prerequisites
+#TODO file no longer available online
+# dnf -y localinstall ${STAGING_DIR}/oracle-database-preinstall-19c-1.0-1.el8.x86_64.rpm
 dnf install -y https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el8.x86_64.rpm
 
 # Set Secure Linux to permissive
