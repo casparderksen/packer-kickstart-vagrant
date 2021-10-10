@@ -25,14 +25,14 @@ build time is significantly reduced (similar to layered Docker image builds).
 An interesting box to build is a development environment that is provisioned with Ansible.
 The resulting box is suited for offline use (behind the corporate firewall).
 
-See the `centos7` branch for Puppet, Weblogic 12c and Oracle 12c boxes (support discontinued by me).
+See the `centos7` branch for Puppet, Weblogic 12c and Oracle 12c boxes (development is discontinued by me).
 
 # Prequisites
 
 Download the following files to the `iso` directory:
 
 - [`CentOS-8.2.2004-x86_64-minimal.iso`](http://isoredirect.centos.org/centos/8.2.2004/isos/x86_64/CentOS-8.2.2004-x86_64-minimal.iso)
-- [`VBoxGuestAdditions_6.1.14.iso`](https://download.virtualbox.org/virtualbox/6.1.14/VBoxGuestAdditions_6.1.14.iso)
+- [`VBoxGuestAdditions_6.1.26.iso`](https://download.virtualbox.org/virtualbox/6.1.26/VBoxGuestAdditions_6.1.26.iso)
 
 When using different versions, adapt the file names and SHA256 checksums in `templates/centos8-basebox.json` accordingly.
 
@@ -149,7 +149,7 @@ The following example playbooks are available:
 
 ## CentOS 8 Oracle 19c box
 
-The directory `vagrant/centos8-oracle19c` contains a Vagranfile for running the Oracle 19c database box.
+The directory `vagrant/centos8-oracle19c` contains a Vagrantfile for running the Oracle 19c database box.
 
 # References
 

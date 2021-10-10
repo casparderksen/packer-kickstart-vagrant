@@ -8,8 +8,8 @@
     "ssh_password": "vagrant",
     "iso_url": "iso/CentOS-8.2.2004-x86_64-minimal.iso",
     "iso_checksum": "47ab14778c823acae2ee6d365d76a9aed3f95bb8d0add23a06536b58bb5293c0",
-    "guest_additions_url": "iso/VBoxGuestAdditions_6.1.14.iso",
-    "guest_additions_sha256": "dd9f176abb89043c01cea7ec7e20130e76db71bd83beafeb2dc5858d4c9c86cd"
+    "guest_additions_url": "iso/VBoxGuestAdditions_6.1.26.iso",
+    "guest_additions_sha256": "22d02ec417cd7723d7269dbdaa71c48815f580c0ca7a0606c42bd623f84873d7"
   },
 
   "provisioners": [
